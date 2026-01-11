@@ -11,7 +11,7 @@ locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 # Network configuration
-echo "turbolinux" > /etc/hostname
+echo "ghostyhub" > /etc/hostname
 
 # Create user 'gamer'
 groupadd -f gamers
@@ -40,7 +40,19 @@ ExecStart=-/usr/bin/agetty --autologin gamer --noclear %I \$TERM
 EOF
 
 # Auto-Start Ghost Launcher in .zshrc
-echo 'if [[ -z $DISPLAY && $(tty) == /dev/tty1 ]]; then exec startx /usr/local/bin/ghost_launcher.py; fi' >> /etc/skel/.zshrc
+cat <<EOF >> /etc/skel/.zshrc
+if [[ -z \$DISPLAY && \$(tty) == /dev/tty1 ]]; then
+    # Detect hardware mode
+    MEM_KB=\$(grep MemTotal /proc/meminfo | awk '{print \$2}')
+    if [ "\$MEM_KB" -lt 1048576 ]; then
+        # < 1GB RAM: ASCII Mode (No Xorg)
+        exec /usr/local/bin/ghost_launcher.py
+    else
+        # > 1GB RAM: Neon Mode (Start Xorg)
+        exec startx /usr/local/bin/ghost_launcher.py
+    fi
+fi
+EOF
 
 # Setup Emulation Defaults in /etc/skel
 mkdir -p /etc/skel/.config/retroarch
