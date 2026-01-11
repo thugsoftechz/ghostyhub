@@ -24,9 +24,23 @@ echo "%wheel ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/wheel
 
 # Enable Services
 systemctl enable NetworkManager
-systemctl enable bluetooth
-systemctl enable sddm
 systemctl enable ghost-ai.service
+
+# Disable Bluetooth by default for RAM saving (Opt-in)
+# systemctl enable bluetooth
+# SDDM removed for Micro Mode
+# systemctl enable sddm
+
+# Configure Auto-Login to TTY1
+mkdir -p /etc/systemd/system/getty@tty1.service.d
+cat <<EOF > /etc/systemd/system/getty@tty1.service.d/override.conf
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --autologin gamer --noclear %I \$TERM
+EOF
+
+# Auto-Start Ghost Launcher in .zshrc
+echo 'if [[ -z $DISPLAY && $(tty) == /dev/tty1 ]]; then exec startx /usr/local/bin/ghost_launcher.py; fi' >> /etc/skel/.zshrc
 
 # Setup Emulation Defaults in /etc/skel
 mkdir -p /etc/skel/.config/retroarch

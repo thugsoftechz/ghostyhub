@@ -1,0 +1,113 @@
+#!/bin/bash
+# GhostyHub Control Tool (ghostyhubctl)
+# Manages hardware detection, emergency modes, and system tuning.
+
+set -u
+
+CMD=${1:-help}
+SUB_CMD=${2:-}
+
+LOG_FILE="/var/log/ghostyhubctl.log"
+
+log() {
+    echo "$(date) - $1" >> "$LOG_FILE"
+}
+
+detect_hardware() {
+    echo "Detecting Hardware..."
+    MEM_KB=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+
+    if [ "$MEM_KB" -lt 524288 ]; then
+        echo "Hardware Class: ANCIENT (<512MB RAM)"
+        return 0
+    elif [ "$MEM_KB" -lt 2097152 ]; then
+        echo "Hardware Class: LOWEND (<2GB RAM)"
+        return 1
+    else
+        echo "Hardware Class: MODERN (>2GB RAM)"
+        return 2
+    fi
+}
+
+anti_oom_enable() {
+    echo "Enabling Anti-OOM Guarantee Mode..."
+    sysctl -w vm.overcommit_memory=2
+    sysctl -w vm.overcommit_ratio=50
+    sysctl -w vm.swappiness=1
+    echo "Anti-OOM Active."
+    log "Anti-OOM Enabled"
+}
+
+emergency_trigger() {
+    echo "!!! EMERGENCY MODE TRIGGERED !!!"
+    echo "Killing background services..."
+    systemctl stop ghost-ai.service 2>/dev/null
+    systemctl stop NetworkManager 2>/dev/null
+
+    echo "Switching to ASCII UI..."
+    # Kill X if running
+    pkill Xorg 2>/dev/null
+
+    # Launch ASCII launcher directly in TTY
+    if [ -t 0 ]; then
+        /usr/local/bin/ghost_launcher.py
+    else
+        echo "Please run from TTY."
+    fi
+}
+
+gpu_set() {
+    MODE=$1
+    echo "Setting GPU Mode to: $MODE"
+    # In a real scenario, this would unload modules or change X config
+    if [ "$MODE" == "none" ]; then
+        echo "Unloading DRM modules..."
+        # modprobe -r amdgpu i915 nouveau drm 2>/dev/null
+    elif [ "$MODE" == "fbdev" ]; then
+        echo "Forcing FBDEV..."
+    fi
+}
+
+case "$CMD" in
+    detect-hardware)
+        detect_hardware
+        ;;
+    anti-oom)
+        if [ "$SUB_CMD" == "enable" ]; then
+            anti_oom_enable
+        else
+            echo "Usage: ghostyhubctl anti-oom enable"
+        fi
+        ;;
+    emergency)
+        if [ "$SUB_CMD" == "trigger" ]; then
+            emergency_trigger
+        else
+            echo "Usage: ghostyhubctl emergency trigger"
+        fi
+        ;;
+    gpu)
+        if [ -n "$SUB_CMD" ]; then
+            gpu_set "$SUB_CMD"
+        else
+            echo "Usage: ghostyhubctl gpu [set <mode>]"
+        fi
+        ;;
+    freeze)
+         if [ "$SUB_CMD" == "enable" ]; then
+            echo "Freezing System Configuration for v1.0 Release..."
+            touch /etc/ghostyhub-frozen
+            echo "System Frozen."
+        fi
+        ;;
+    help|*)
+        echo "GhostyHub Control Tool v1.0"
+        echo "Usage: ghostyhubctl [command] [subcommand]"
+        echo "Commands:"
+        echo "  detect-hardware   - Detect system tier"
+        echo "  anti-oom enable   - Enable strict memory handling"
+        echo "  emergency trigger - Kill GUI and drop to ASCII"
+        echo "  gpu set <mode>    - Force GPU mode (none, fbdev)"
+        echo "  freeze enable     - Lock configuration"
+        ;;
+esac

@@ -16,8 +16,6 @@ dhclient
 wpa_supplicant
 bluez
 bluez-utils
-pulseaudio
-pulseaudio-bluetooth
 pipewire
 pipewire-alsa
 pipewire-pulse
@@ -51,21 +49,12 @@ nvidia-utils
 lib32-nvidia-utils
 nvidia-settings
 
-# Desktop Environment (KDE Plasma Minimal)
-plasma-desktop
-sddm
-sddm-kcm
-konsole
-dolphin
-ark
-spectacle
-plasma-pa
-plasma-nm
-powerdevil
-kscreen
-breeze
-breeze-gtk
-kde-gtk-config
+# Desktop Environment (Micro Mode - Custom)
+python-pygame
+python-curses
+xorg-server
+xorg-xinit
+# Removed KDE Plasma for RAM optimization
 
 # Gaming Environment
 gamescope

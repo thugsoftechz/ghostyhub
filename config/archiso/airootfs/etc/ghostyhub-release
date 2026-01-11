@@ -1,0 +1,10 @@
+NAME="GhostyHub"
+VERSION="1.0-freeze"
+ID=ghostyhub
+ID_LIKE=arch
+PRETTY_NAME="GhostyHub v1.0 (Phantom Launch)"
+HOME_URL="https://ghostyhub.io/"
+SUPPORT_URL="https://github.com/ghostyhub"
+BUG_REPORT_URL="https://github.com/ghostyhub/issues"
+GHOST_MODE_DEFAULT="game"
+FROZEN="yes"
