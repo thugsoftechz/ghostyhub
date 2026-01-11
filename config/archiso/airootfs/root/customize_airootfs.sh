@@ -13,12 +13,6 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 # Network configuration
 echo "ghostyhub" > /etc/hostname
 
-# Create user 'gamer'
-groupadd -f gamers
-useradd -m -G wheel,rfkill,video,audio,input,storage,gamers -s /bin/zsh gamer
-echo "gamer:gamer" | chpasswd
-echo "root:root" | chpasswd
-
 # Configure sudo
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/wheel
 
@@ -81,3 +75,9 @@ pacman-key --populate archlinux
 # Note: chaotic-aur keyring would need to be installed here if enabled
 # pacman-key --recv-key ...
 # pacman-key --lsign-key ...
+
+# Create user 'gamer' (Created LAST to ensure /etc/skel is copied correctly)
+groupadd -f gamers
+useradd -m -G wheel,rfkill,video,audio,input,storage,gamers -s /bin/zsh gamer
+echo "gamer:gamer" | chpasswd
+echo "root:root" | chpasswd

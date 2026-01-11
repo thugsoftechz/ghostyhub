@@ -51,7 +51,6 @@ nvidia-settings
 
 # Desktop Environment (Micro Mode - Custom)
 python-pygame
-python-curses
 xorg-server
 xorg-xinit
 # Removed KDE Plasma for RAM optimization
