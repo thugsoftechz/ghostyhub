@@ -26,7 +26,7 @@ echo "%wheel ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/wheel
 systemctl enable NetworkManager
 systemctl enable bluetooth
 systemctl enable sddm
-systemctl enable gaming-optimize.service
+systemctl enable ghost-ai.service
 
 # Setup Emulation Defaults in /etc/skel
 mkdir -p /etc/skel/.config/retroarch

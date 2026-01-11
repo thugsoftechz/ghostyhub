@@ -1,84 +1,111 @@
-# Ultra-Performance Gaming Linux Distro
+# GhostyHub
+**Boot. Dominate. Disappear.**
 
-This project provides a complete build system for a custom, high-performance Linux gaming distribution. It is designed to run live from RAM with persistence or be installed to disk.
+GhostyHub is a performance-first gaming platform built on Linux, designed for PC gamers, handheld devices, Steam Deck, VR, emulation, and esports environments. It combines a custom gaming-optimized OS (**GHOST-OS X**), an AI performance engine, and a controller-first UI into one unified ecosystem.
 
-## Features
+## 🚀 What Makes GhostyHub Different
+*   **Live-Boot Gaming OS** – Run directly from USB/ISO with RAM-first execution.
+*   **Kernel-Level Performance** – Custom scheduler + low-latency patches.
+*   **AI-Based Performance Tuning** – Offline, per-game optimization.
+*   **Steam Deck–Style UI** – Console UX, PC power.
+*   **VR-First Architecture** – OpenXR + SteamVR auto-mode.
+*   **Universal Emulation** – Retro → Modern platforms.
+*   **Offline-First & Privacy-First** – No spyware, no forced cloud.
 
-- **Base**: Arch Linux (Rolling Release)
-- **Kernel**: Optimized for Gaming (Zen / CachyOS) with PREEMPT, high tick rate.
-- **UI**:
-  - **Desktop Mode**: Minimal KDE Plasma.
-  - **Game Mode**: Gamescope session (Steam Big Picture / Pegasus).
-- **Gaming Stack**: Steam, Lutris, Heroic, Wine-Staging, Proton-GE, DXVK, VKD3D.
-- **Emulation**: RetroArch, Dolphin, PCSX2, RPCS3, and more pre-installed.
-- **Live Boot**: Complete OS loads into RAM (tmpfs) for zero I/O latency.
+## 📦 Editions
 
-## Prerequisites
+| Edition | Use Case |
+| :--- | :--- |
+| **Community** | Desktop & laptop gamers |
+| **Steam Deck** | Valve Steam Deck |
+| **Handheld** | ROG Ally, AYANEO, GPD |
+| **Esports Arena** | LAN cafés & tournaments |
+| **OEM** | Hardware partners |
 
-- A Linux host system (Arch Linux recommended for `archiso` tools).
-- Python 3.10+
-- `archiso` package installed (`pacman -S archiso`).
-- ~15GB free space for the build process.
-- Root privileges (required by `archiso`).
+## 🖥️ Hardware Requirements
 
-## Building the ISO
+**Minimum**
+*   x86_64 CPU (4 cores)
+*   8 GB RAM
+*   Vulkan-capable GPU
+*   USB 3.0 (for live boot)
 
-1. **Clone the repository**:
-   ```bash
-   git clone <repo_url>
-   cd <repo_name>
-   ```
+**Recommended**
+*   8+ cores
+*   16 GB RAM
+*   Dedicated GPU (AMD/NVIDIA)
+*   NVMe (for installed mode)
 
-2. **Run the build script**:
-   ```bash
-   sudo python3 build.py --clean --build
-   ```
+## ⚡ Live Boot Usage
+1.  Flash ISO to USB (Rufus / BalenaEtcher).
+2.  Boot from USB.
+3.  GhostyHub loads entirely into RAM.
+4.  **Game Mode UI** launches automatically.
+5.  Optional persistent storage supported.
 
-   Options:
-   - `--clean`: Clean up previous build artifacts.
-   - `--build`: Start the build process.
-   - `--debug`: Enable verbose logging.
-   - `--kernel-source`: (Optional) Compile kernel from source instead of using pre-built.
+## 🎮 Gaming Stack
+*   Steam + Proton-GE
+*   Lutris
+*   Heroic Games Launcher
+*   Gamescope
+*   MangoHUD
+*   Feral GameMode
+*   *All preconfigured for Vulkan-first rendering.*
 
-3. **Burn to USB**:
-   The output ISO will be in `out/`. Use Etcher or `dd`:
-   ```bash
-   sudo dd if=out/turbo-linux-v1.0.iso of=/dev/sdX bs=4M status=progress
-   ```
+## 🕹️ Emulation Support
+*   NES / SNES / N64
+*   GameCube / Wii / Wii U
+*   PlayStation 1 → 3 + Vita
+*   Xbox / Xbox 360
+*   Nintendo Switch
+*   Android (Waydroid)
+*   *Unified launcher + auto-BIOS detection.*
 
-## Architecture
+## 🕶️ VR Support
+*   SteamVR
+*   OpenXR (default)
+*   Auto VR-mode switching
+*   Dedicated CPU/GPU priority
+*   *VR is treated as a first-class citizen.*
 
-- **`build.py`**: The main orchestrator. Wraps `mkarchiso`.
-- **`config/archiso`**: The Archiso profile definition.
-- **`scripts/`**: Helper scripts for hardware detection, kernel building, and runtime optimization.
+## 🧠 AI Performance Engine
+*   Monitors FPS, frame-time, thermals.
+*   Adjusts CPU governor & GPU clocks.
+*   Learns per-game behavior.
+*   Fully offline.
+*   One-click rollback.
+*   *AI prioritizes frame-time consistency over peak FPS.*
 
-## Post-Boot
+## ☁️ Cloud Save & Sync (Optional)
+*   Self-hosted.
+*   End-to-end encrypted.
+*   USB fallback.
+*   No forced login.
 
-- The system auto-detects GPU (Nvidia/AMD/Intel) and loads appropriate drivers.
-- "Game Mode" is available at the login screen.
-- Emulators are pre-configured in `~/.config/retroarch`.
+## 🔐 Security & Privacy
+*   No telemetry by default.
+*   Signed packages.
+*   Sandbox isolation.
+*   User-controlled permissions.
 
-## Performance Benchmarking Methodology
+## 🧑‍💻 Contributing
+GhostyHub is community-driven. You can contribute via:
+*   Kernel patches
+*   Emulator configs
+*   UI themes
+*   AI tuning profiles
+*   Documentation
 
-To ensure zero-lag performance, we recommend the following benchmarking tools:
-1. **MangoHUD**: Enabled by default. Press `Shift_R+F12` to toggle.
-2. **vkMark**: Run `vkmark` to stress test the Vulkan driver stack.
-3. **LatencyTop**: Use `latencytop` to visualize kernel latencies.
+See `CONTRIBUTING.md` for details.
 
-## Troubleshooting Guide
+## 📜 License Overview
+*   Kernel patches: GPLv2
+*   UI & tools: Dual license (GPL / Commercial)
+*   Community configs: Open
 
-### Build Fails on Keyring
-If the build fails with signature errors, ensure your host has up-to-date Arch keys:
-```bash
-sudo pacman -S archlinux-keyring
-```
+## 🌍 Community
+*   GitHub: https://github.com/ghostyhub
+*   Matrix / Discord (coming soon)
 
-### Nvidia Drivers Not Loading
-If booting on a hybrid laptop, ensure you are not in "Integrated Only" mode in BIOS.
-The `hardware_detect.py` script logs to `systemctl status gaming-optimize`.
-
-## Future Roadmap
-
-- **v1.1**: Full `chaotic-aur` integration for CachyOS kernels.
-- **v1.2**: Custom installer (Calamares) for permanent disk installation.
-- **v2.0**: Handheld mode UI (Steam Deck clone interface).
+---
+*GhostyHub is not trying to be another Linux distro. It is built to replace compromise with control.*

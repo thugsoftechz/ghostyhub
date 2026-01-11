@@ -1,7 +1,7 @@
-iso_name="turbolinux"
-iso_label="TURBOLINUX_$(date +%Y%m)"
-iso_publisher="Jules <jules@example.com>"
-iso_application="TurboLinux Gaming Live"
+iso_name="ghostyhub"
+iso_label="GHOSTYHUB_$(date +%Y%m)"
+iso_publisher="GhostyHub Team <team@ghostyhub.io>"
+iso_application="GhostyHub Gaming Platform"
 iso_version="$(date +%Y.%m.%d)"
 install_dir="arch"
 buildmodes=('iso')

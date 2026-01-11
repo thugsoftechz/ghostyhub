@@ -1,0 +1,14 @@
+[Unit]
+Description=GhostyHub AI Performance Service
+Before=display-manager.service
+After=network.target
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/python3 /usr/local/bin/hardware_detect.py
+ExecStartPre=/usr/local/bin/optimize.sh
+ExecStart=/usr/bin/python3 /usr/local/bin/ghost_ai_tuner.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
